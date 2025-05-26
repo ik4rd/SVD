@@ -2,6 +2,8 @@
 
 > _Tiny CLI utility that shrinks grayscale images via **truncated Singular Value Decomposition**._
 
+![cool dog](/images/dog/cool%20dog.gif)
+
 ---
 
 ## 🧠 TL;DR SVD in one minute
