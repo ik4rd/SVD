@@ -15,7 +15,7 @@ A = U \Sigma V^{T},
 $$
 
 where $U$ and $V$ are orthogonal matrices and $\Sigma$ is diagonal.  
-If you keep only the first $k$ singular triplets you get the best rank-$k$ approximation (in Frobenius norm):
+If you keep only the first $k$ singular triplets you get the best rank-k approximation (*in Frobenius norm*):
 
 $$
 A_k = \sum_{r=1}^{k} \sigma_r u_r v_{r}^{T}, \qquad k \ll \min(m,n)
