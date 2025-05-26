@@ -1,0 +1,9 @@
+# dirs
+/cmake-build-debug
+/build
+/.idea
+
+#files
+/images/dog/input.cache
+.DS_Store
+images/.DS_Store
