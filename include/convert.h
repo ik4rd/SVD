@@ -6,7 +6,9 @@
 #define CONVERT_H
 
 #include "pgm.h"
+#include "ppm.h"
 
 PGMImage *convert_to_pgm(const char *filename);
+PPMImage *convert_to_ppm(const char *filename);
 
 #endif	// CONVERT_H

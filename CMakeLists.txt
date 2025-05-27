@@ -13,4 +13,6 @@ add_executable(svd
         src/main.c
         src/cache.c
         include/cache.h
+        include/ppm.h
+        src/ppm.c
 )
