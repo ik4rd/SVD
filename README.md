@@ -73,19 +73,19 @@ MacBook :: .../SVD/build >> ./svd --color=1 ../images/dog/input.png ../images/do
 ├── images/                   # here you can load images and try SVD
 ├── include/                  # public headers
 │   ├── cache/                # cache I/O API
-│   │   ├── cache.h
+│   │   └── cache.h
 │   ├── core/                 # processing
 │   │   ├── cli.h             # reading args from cmd
 │   │   ├── processor.h       # main worker
-│   │   ├── utils.h           # utilities
+│   │   └── utils.h           # utilities
 │   ├── image-processor/      # image module
 │   │   ├── pgm-ppm-parsers/  # PGM/PPM parsers
 │   │   │   ├── pgm.h
-│   │   │   ├── ppm.h
+│   │   │   └── ppm.h
 │   │   ├── convert.h         # any image to PGM or PPM
-│   │   ├── image.h           # image interface
+│   │   └── image.h           # image interface
 │   ├── linear-algebra/       # SVD
-│   │   ├── svd.h
+│   │   └── svd.h
 ├── src/                      # implementations
 │   ├── cache/
 │   ├── core/
