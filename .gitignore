@@ -1,8 +1,8 @@
 # dirs
-/cmake-build-debug
-/build
-/.idea
-/test
+/cmake-build-debug/
+/build/
+/.idea/
+/test/
 
 #files
 .DS_Store
