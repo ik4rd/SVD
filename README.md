@@ -78,7 +78,7 @@ Example:
 │   ├── pgm.h         # PGM parser/writer 
 │   ├── ppm.h         # PPM parser/writer                   
 │   ├── svd.h         # Singular Value Decomposition
-│   └── utils.h       # Utilities        
+│   └── utils.h       # utilities        
 ├── src/              # implementation                      
 │   ├── cache.c                        
 │   ├── convert.c
