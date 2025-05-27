@@ -19,4 +19,6 @@ add_executable(svd
         src/utils.c
         include/image-processor/image.h
         src/image-processor/image.c
+        include/cli.h
+        src/cli.c
 )

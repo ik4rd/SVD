@@ -8,43 +8,29 @@
 #include <string.h>
 
 #include "../include/cache.h"
+#include "../include/cli.h"
 #include "../include/image-processor/convert.h"
 #include "../include/image-processor/image.h"
 #include "../include/linear-algebra/svd.h"
 #include "../include/utils.h"
 
 int main(const int argc, char **argv) {
-	int color = 0, k = 0;
-	const char *input;
-	const char *output;
-
-	int argi = 1;
-	if (argi < argc && strncmp(argv[argi], "--color=", 8) == 0) {
-		color = atoi(argv[argi] + 8);
-		argi++;
-	}
-	if (argi + 3 != argc) {
-		fprintf(stderr, "usage: %s [--color=1] input output rank\n", argv[0]);
+	CLIOptions options;
+	if (parse(argc, argv, &options) != 0) {
 		return 1;
 	}
 
-	input = argv[argi++];
-	output = argv[argi++];
-	k = atoi(argv[argi]);
-	if (k <= 0) {
-		fprintf(stderr, "invalid rank '%s'\n", argv[argi]);
-	}
-
-	Image *image = read_image(input, color);
+	Image *image = read_image(options.input_path, options.color);
 	if (!image) {
-		fprintf(stderr, "failed to read image '%s'\n", input);
+		fprintf(stderr, "failed to read image '%s'\n", options.input_path);
 		return 2;
 	}
 
 	const int m = image->height;
 	const int n = image->width;
+	const int k = options.rank;
 
-	char *in_dup = strdup(input);
+	char *in_dup = strdup(options.input_path);
 	char *dir = dirname(in_dup);
 	const char *base = basename(in_dup);
 
@@ -69,8 +55,11 @@ int main(const int argc, char **argv) {
 		snprintf(cache_file, sizeof(cache_file),
 				 "%s/.cache-svd/%s_channel%d.cache", dir, name_no_ext, c);
 
-		const int loaded = load_cache(cache_file, m, n, U, V, S, k);
-		printf("channel %d: loaded %d from cache\n", c, loaded);
+		int loaded = 0;
+		if (options.cache) {
+			loaded = load_cache(cache_file, m, n, U, V, S, k);
+			printf("channel %d: loaded %d from cache\n", c + 1, loaded);
+		}
 
 		for (int r = 0; r < loaded; ++r) {
 			for (int i = 0; i < m; ++i)
@@ -86,7 +75,12 @@ int main(const int argc, char **argv) {
 			printf("channel %d sigma[%d] = %f\n", c + 1, r + 1, S[r]);
 		}
 
-		save_cache(cache_file, m, n, U, V, S, k);
+		if (options.cache) {
+			if (save_cache(cache_file, m, n, U, V, S, k) != 0) {
+				fprintf(stderr, "warning: failed to save cache to '%s'\n",
+						cache_file);
+			}
+		}
 
 		for (int r = 0; r < k; ++r) {
 			free(U[r]);
@@ -105,12 +99,14 @@ int main(const int argc, char **argv) {
 
 	free(in_dup);
 
-	if (write_image(output, image)) {
-		fprintf(stderr, "failed to write image '%s'\n", output);
+	if (write_image(options.output_path, image)) {
+		fprintf(stderr, "failed to write image '%s'\n", options.output_path);
 		free_image(image);
 		return 3;
 	}
 
 	free_image(image);
+	free(options.input_path);
+	free(options.output_path);
 	return 0;
 }
