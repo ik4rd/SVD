@@ -5,8 +5,8 @@
 #ifndef CONVERT_H
 #define CONVERT_H
 
-#include "pgm.h"
-#include "ppm.h"
+#include "pgm-ppm-parsers/pgm.h"
+#include "pgm-ppm-parsers/ppm.h"
 
 PGMImage *convert_to_pgm(const char *filename);
 PPMImage *convert_to_ppm(const char *filename);

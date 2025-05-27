@@ -4,7 +4,30 @@
 
 #include "cache.h"
 
+#include <libgen.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/errno.h>
+#include <sys/stat.h>
+
+static int ensure_parent_dir(const char *filename) {
+	char *dup = strdup(filename);
+	if (!dup) return -1;
+
+	const char *dir = dirname(dup);
+
+	struct stat st;
+	if (stat(dir, &st) == -1) {
+		if (mkdir(dir, 0755) == -1 && errno != EEXIST) {
+			free(dup);
+			return -1;
+		}
+	}
+
+	free(dup);
+	return 0;
+}
 
 int load_cache(const char *cache_filename, const int m, const int n, double **U,
 			   double **V, double *S, const int max_k) {
@@ -48,6 +71,11 @@ int load_cache(const char *cache_filename, const int m, const int n, double **U,
 
 int save_cache(const char *cache_filename, const int m, const int n, double **U,
 			   double **V, const double *S, const int k) {
+	if (ensure_parent_dir(cache_filename) != 0) {
+		perror("save_cache: cannot create cache dir");
+		return 1;
+	}
+
 	FILE *file = fopen(cache_filename, "wb");
 	if (!file) {
 		perror("save_cache: fopen");

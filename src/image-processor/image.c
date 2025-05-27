@@ -2,14 +2,14 @@
 // Created by ilya on 27.05.2025.
 //
 
-#include "../include/image.h"
+#include "../../include/image-processor/image.h"
 
 #include <stdlib.h>
 
-#include "../include/convert.h"
-#include "../include/pgm.h"
-#include "../include/ppm.h"
-#include "../include/utils.h"
+#include "../../include/image-processor/convert.h"
+#include "../../include/image-processor/pgm-ppm-parsers/pgm.h"
+#include "../../include/image-processor/pgm-ppm-parsers/ppm.h"
+#include "../../include/utils.h"
 
 Image *read_image(const char *filename, const int color) {
 	Image *image = malloc(sizeof(Image));

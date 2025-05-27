@@ -2,12 +2,12 @@
 // Created by ilya on 27.05.2025.
 //
 
-#include "../include/ppm.h"
+#include "../../../include/image-processor/pgm-ppm-parsers/ppm.h"
 
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/utils.h"
+#include "../../../include/utils.h"
 
 PPMImage *read_ppm_stream(FILE *file) {
 	char buffer[256];

@@ -2,7 +2,7 @@
 // Created by ilya on 26.05.2025.
 //
 
-#include "../include/svd.h"
+#include "../../include/linear-algebra/svd.h"
 
 #include <math.h>
 #include <stdlib.h>

@@ -8,9 +8,9 @@
 #include <string.h>
 
 #include "../include/cache.h"
-#include "../include/convert.h"
-#include "../include/image.h"
-#include "../include/svd.h"
+#include "../include/image-processor/convert.h"
+#include "../include/image-processor/image.h"
+#include "../include/linear-algebra/svd.h"
 #include "../include/utils.h"
 
 int main(const int argc, char **argv) {
@@ -66,8 +66,8 @@ int main(const int argc, char **argv) {
 		}
 
 		char cache_file[512];
-		snprintf(cache_file, sizeof(cache_file), "%s/%s_channel%d.cache", dir,
-				 name_no_ext, c);
+		snprintf(cache_file, sizeof(cache_file),
+				 "%s/.cache-svd/%s_channel%d.cache", dir, name_no_ext, c);
 
 		const int loaded = load_cache(cache_file, m, n, U, V, S, k);
 		printf("channel %d: loaded %d from cache\n", c, loaded);

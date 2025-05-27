@@ -2,7 +2,7 @@
 // Created by ilya on 26.05.2025.
 //
 
-#include "../include/convert.h"
+#include "../../include/image-processor/convert.h"
 
 #include <stdio.h>
 #include <stdlib.h>
