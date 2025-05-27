@@ -42,7 +42,7 @@ loss**.
 # 1 – Install ImageMagick (macOS example)
 MacBook :: ((somewhere)) >> brew install imagemagick
 
-# 2 – Build (out-of-tree)
+# 2 – Build
 MacBook :: .../SVD       >> mkdir build && cd build
 MacBook :: .../SVD/build >> cmake ..
 MacBook :: .../SVD/build >> make
