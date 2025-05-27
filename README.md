@@ -69,25 +69,29 @@ MacBook :: .../SVD/build >> ./svd --color=1 ../images/dog/input.png ../images/do
 
 ```text
 .
-├── + build/          # here you can build (follow Quick start)                  
-├── images/           # here you can load images and try SVD
-├── include/          # public headers                      
-│   ├── cache.h       # cache I/O API                        
-│   ├── convert.h     # ImageMagick call                    
-│   ├── image.h       # image abstraction interface          
-│   ├── pgm.h         # PGM parser/writer 
-│   ├── ppm.h         # PPM parser/writer                   
-│   ├── svd.h         # Singular Value Decomposition
-│   └── utils.h       # utilities        
-├── src/              # implementation                      
-│   ├── cache.c                        
-│   ├── convert.c
-│   ├── image.c
-│   ├── pgm.c
-│   ├── ppm.c
-│   ├── svd.c
-│   ├── utils.c
-│   └── main.c        # CLI                                 
+├── + build/                  # here you can build (follow Quick start)
+├── images/                   # here you can load images and try SVD
+├── include/                  # public headers
+│   ├── cache/                # cache I/O API
+│   │   ├── cache.h
+│   ├── core/                 # processing
+│   │   ├── cli.h             # reading args from cmd
+│   │   ├── processor.h       # main worker
+│   │   ├── utils.h           # utilities
+│   ├── image-processor/      # image module
+│   │   ├── pgm-ppm-parsers/  # PGM/PPM parsers
+│   │   │   ├── pgm.h
+│   │   │   ├── ppm.h
+│   │   ├── convert.h         # any image to PGM or PPM
+│   │   ├── image.h           # image interface
+│   ├── linear-algebra/       # SVD
+│   │   ├── svd.h
+├── src/                      # implementations
+│   ├── cache/
+│   ├── core/
+│   ├── image-processor/
+│   ├── linear-algebra/
+│   └── main.c                # CLI
 ├── CMakeLists.txt
 └── README.md
 ```
