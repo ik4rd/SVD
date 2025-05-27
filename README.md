@@ -43,22 +43,22 @@ loss**.
 brew install imagemagick
 
 # 2 – Build (out-of-tree)
-mkdir -p build && cd build
+mkdir build && cd build
 cmake ..
 make
 
 # 3 – Compress!
-./svd <input> <output.pgm> <rank>
+./svd [--color=0] <input> <output> <rank>
 ```
 
 Example:
 
 ```bash
 ./svd --color=0 ../images/dog/input.png ../images/dog/color-nocolor/nocolor/output-nocolor-4.pgm 4  
-# if you want RGB image
+# if you want BW image
 
 ./svd --color=1 ../images/dog/input.png ../images/dog/color-nocolor/color/output-color-4.ppm 4  
-#if you want BW image
+#if you want RGB image
 
 # → subsequent runs are near-instant: “loaded 4 from cache ...”
 ```
@@ -69,19 +69,25 @@ Example:
 
 ```text
 .
-├── build/            # here you can build                  
+├── + build/          # here you can build (follow Quick start)                  
 ├── images/           # here you can load images and try SVD
 ├── include/          # public headers                      
-│   ├── cache.h                                             
-│   ├── convert.h                                           
-│   ├── pgm.h                                               
-│   └── svd.h                                               
+│   ├── cache.h       # cache I/O API                        
+│   ├── convert.h     # ImageMagick call                    
+│   ├── image.h       # image abstraction interface          
+│   ├── pgm.h         # PGM parser/writer 
+│   ├── ppm.h         # PPM parser/writer                   
+│   ├── svd.h         # Singular Value Decomposition
+│   └── utils.h       # Utilities        
 ├── src/              # implementation                      
-│   ├── cache.c  ─┐   # cache I/O                           
-│   ├── convert.c │   # ImageMagick call                    
-│   ├── pgm.c     │   # PGM parser/writer                   
-│   ├── svd.c     │   # SVD                                 
-│   └── main.c    ┘   # CLI                                 
+│   ├── cache.c                        
+│   ├── convert.c
+│   ├── image.c
+│   ├── pgm.c
+│   ├── ppm.c
+│   ├── svd.c
+│   ├── utils.c
+│   └── main.c        # CLI                                 
 ├── CMakeLists.txt
 └── README.md
 ```
