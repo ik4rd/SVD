@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../../include/utils.h"
+#include "../../../include/core/utils.h"
 
 PGMImage *read_pgm_stream(FILE *file) {
 	char buffer[256];

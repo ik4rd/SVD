@@ -6,11 +6,11 @@
 #include <string.h>
 
 #include "../include/cache.h"
-#include "../include/cli.h"
+#include "../include/core/cli.h"
+#include "../include/core/processor.h"
+#include "../include/core/utils.h"
 #include "../include/image-processor/convert.h"
 #include "../include/image-processor/image.h"
-#include "../include/processor.h"
-#include "../include/utils.h"
 
 int main(const int argc, char **argv) {
 	CLIOptions options;

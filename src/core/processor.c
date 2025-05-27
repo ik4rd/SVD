@@ -2,13 +2,13 @@
 // Created by ilya on 27.05.2025.
 //
 
-#include "../include/processor.h"
+#include "../../include/core/processor.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../include/linear-algebra/svd.h"
-#include "../include/utils.h"
+#include "../../include/core/utils.h"
+#include "../../include/linear-algebra/svd.h"
 
 void process_channel(int channel, Image *image, const char *cache_dir,
 					 const char *name_no_ext, const CLIOptions *options) {

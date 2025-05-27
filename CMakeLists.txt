@@ -15,12 +15,12 @@ add_executable(svd
         include/cache/cache.h
         include/image-processor/pgm-ppm-parsers/ppm.h
         src/image-processor/pgm-ppm-parsers/ppm.c
-        include/utils.h
-        src/utils.c
+        include/core/utils.h
+        src/core/utils.c
         include/image-processor/image.h
         src/image-processor/image.c
-        include/cli.h
-        src/cli.c
-        include/processor.h
-        src/processor.c
+        include/core/cli.h
+        src/core/cli.c
+        include/core/processor.h
+        src/core/processor.c
 )

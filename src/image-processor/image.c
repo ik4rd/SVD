@@ -6,10 +6,10 @@
 
 #include <stdlib.h>
 
+#include "../../include/core/utils.h"
 #include "../../include/image-processor/convert.h"
 #include "../../include/image-processor/pgm-ppm-parsers/pgm.h"
 #include "../../include/image-processor/pgm-ppm-parsers/ppm.h"
-#include "../../include/utils.h"
 
 Image *read_image(const char *filename, const int color) {
 	Image *image = malloc(sizeof(Image));

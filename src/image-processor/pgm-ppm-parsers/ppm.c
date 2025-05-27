@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../../../include/utils.h"
+#include "../../../include/core/utils.h"
 
 PPMImage *read_ppm_stream(FILE *file) {
 	char buffer[256];
