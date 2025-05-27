@@ -48,16 +48,16 @@ MacBook :: .../SVD/build >> cmake ..
 MacBook :: .../SVD/build >> make
 
 # 3 – Compress!
-MacBook :: .../SVD/build >> ./svd [--color=0] <input> <output> <rank>
+MacBook :: .../SVD/build >> ./svd [--color=0] [--cache=0] <input> <output> <rank>
 ```
 
 Example (for this repo):
 
 ```bash
-MacBook :: .../SVD/build >> ./svd --color=0 ../images/dog/input.png ../images/dog/color-nocolor/nocolor/output-nocolor-4.pgm 4  
+MacBook :: .../SVD/build >> ./svd --color=0 ../images/dog/input.png ../images/dog/color-nocolor/nocolor/output-nocolor-4 4  
 # if you want BW image
 
-MacBook :: .../SVD/build >> ./svd --color=1 ../images/dog/input.png ../images/dog/color-nocolor/color/output-color-4.ppm 4  
+MacBook :: .../SVD/build >> ./svd --color=1 ../images/dog/input.png ../images/dog/color-nocolor/color/output-color-4 4  
 #if you want RGB image
 
 # → subsequent runs are near-instant: “loaded 4 from cache ...”
