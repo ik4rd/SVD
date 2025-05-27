@@ -9,53 +9,40 @@
 
 #include "../include/cache.h"
 #include "../include/convert.h"
-#include "../include/pgm.h"
+#include "../include/image.h"
 #include "../include/svd.h"
-
-static int extension(const char *filename, const char *ext) {
-	const size_t l1 = strlen(filename), l2 = strlen(ext);
-	return (l1 > l2 && strcmp(filename + l1 - l2, ext) == 0);
-}
+#include "../include/utils.h"
 
 int main(const int argc, char **argv) {
-	if (argc != 4) {
-		fprintf(stderr, "usage: %s input output.pgm rank\n", argv[0]);
+	int color = 0, k = 0;
+	const char *input;
+	const char *output;
+
+	int argi = 1;
+	if (argi < argc && strncmp(argv[argi], "--color=", 8) == 0) {
+		color = atoi(argv[argi] + 8);
+		argi++;
+	}
+	if (argi + 3 != argc) {
+		fprintf(stderr, "usage: %s [--color=1] input output rank\n", argv[0]);
 		return 1;
 	}
 
-	const char *input = argv[1];
-	const char *output = argv[2];
-	const int k = atoi(argv[3]);
-
-	PGMImage *image;
-	if (extension(input, ".pgm")) {
-		image = read_pgm_image(input);
-	} else {
-		image = convert_to_pgm(input);
+	input = argv[argi++];
+	output = argv[argi++];
+	k = atoi(argv[argi]);
+	if (k <= 0) {
+		fprintf(stderr, "invalid rank '%s'\n", argv[argi]);
 	}
 
+	Image *image = read_image(input, color);
 	if (!image) {
-		fprintf(stderr, "could not read %s\n", input);
+		fprintf(stderr, "failed to read image '%s'\n", input);
 		return 2;
 	}
 
 	const int m = image->height;
 	const int n = image->width;
-
-	double **A = malloc(m * sizeof(double *));
-	for (int i = 0; i < m; ++i) {
-		A[i] = malloc(n * sizeof(double));
-		memcpy(A[i], image->data[i], n * sizeof(double));
-	}
-
-	double *S = malloc(k * sizeof(double));
-	double **U = malloc(k * sizeof(double *));
-	double **V = malloc(k * sizeof(double *));
-
-	for (int r = 0; r < k; ++r) {
-		U[r] = malloc(m * sizeof(double));
-		V[r] = malloc(n * sizeof(double));
-	}
 
 	char *in_dup = strdup(input);
 	char *dir = dirname(in_dup);
@@ -67,46 +54,63 @@ int main(const int argc, char **argv) {
 	char *dot = strrchr(name_no_ext, '.');
 	if (dot) *dot = '\0';
 
-	char cache_file[512];
-	snprintf(cache_file, sizeof(cache_file), "%s/%s.cache", dir, name_no_ext);
+	for (int c = 0; c < image->channels; ++c) {
+		double **A = image->data[c];
+		double **B = allocate_matrix(m, n);
+		double *S = malloc(k * sizeof(double));
+		double **U = malloc(k * sizeof(double *));
+		double **V = malloc(k * sizeof(double *));
+		for (int r = 0; r < k; ++r) {
+			U[r] = malloc(m * sizeof(double));
+			V[r] = malloc(n * sizeof(double));
+		}
+
+		char cache_file[512];
+		snprintf(cache_file, sizeof(cache_file), "%s/%s_channel%d.cache", dir,
+				 name_no_ext, c);
+
+		const int loaded = load_cache(cache_file, m, n, U, V, S, k);
+		printf("channel %d: loaded %d from cache\n", c, loaded);
+
+		for (int r = 0; r < loaded; ++r) {
+			for (int i = 0; i < m; ++i)
+				for (int j = 0; j < n; ++j) B[i][j] += S[r] * U[r][i] * V[r][j];
+			deflate(m, n, A, U[r], V[r], S[r]);
+		}
+
+		for (int r = loaded; r < k; ++r) {
+			compute_singular(m, n, A, U[r], V[r], &S[r], 100);
+			for (int i = 0; i < m; ++i)
+				for (int j = 0; j < n; ++j) B[i][j] += S[r] * U[r][i] * V[r][j];
+			deflate(m, n, A, U[r], V[r], S[r]);
+			printf("channel %d sigma[%d] = %f\n", c + 1, r + 1, S[r]);
+		}
+
+		save_cache(cache_file, m, n, U, V, S, k);
+
+		for (int r = 0; r < k; ++r) {
+			free(U[r]);
+			free(V[r]);
+		}
+		free(U);
+		free(V);
+		free(S);
+
+		for (int i = 0; i < m; ++i) {
+			free(A[i]);
+		}
+		free(A);
+		image->data[c] = B;
+	}
+
 	free(in_dup);
 
-	const int loaded = load_cache(cache_file, m, n, U, V, S, k);
-	printf("loaded %d from cache\n", loaded);
-
-	for (int r = 0; r < loaded; ++r) {
-		deflate(m, n, A, U[r], V[r], S[r]);
+	if (write_image(output, image)) {
+		fprintf(stderr, "failed to write image '%s'\n", output);
+		free_image(image);
+		return 3;
 	}
 
-	for (int r = loaded; r < k; ++r) {
-		compute_singular(m, n, A, U[r], V[r], &S[r], 100);
-		deflate(m, n, A, U[r], V[r], S[r]);
-		printf("sigma[%d] = %f\n", r + 1, S[r]);
-	}
-	save_cache(cache_file, m, n, U, V, S, k);
-
-	for (int i = 0; i < m; ++i) {
-		for (int j = 0; j < n; ++j) {
-			double sum = 0;
-			for (int r = 0; r < k; ++r) {
-				sum += U[r][i] * S[r] * V[r][j];
-			}
-			image->data[i][j] = sum;
-		}
-	}
-
-	write_pgm(output, image);
-
-	free_pgm(image);
-	for (int i = 0; i < m; ++i) free(A[i]);
-	free(A);
-	for (int r = 0; r < k; ++r) {
-		free(U[r]);
-		free(V[r]);
-	}
-	free(U);
-	free(V);
-	free(S);
-
+	free_image(image);
 	return 0;
 }

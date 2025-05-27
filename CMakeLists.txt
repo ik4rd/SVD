@@ -17,4 +17,6 @@ add_executable(svd
         src/ppm.c
         include/utils.h
         src/utils.c
+        include/image.h
+        src/image.c
 )

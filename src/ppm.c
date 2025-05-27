@@ -73,8 +73,11 @@ int write_ppm(const char *filename, const PPMImage *image) {
 			if (g > image->max) g = image->max;
 			if (b < 0) b = 0;
 			if (b > image->max) b = image->max;
+			row[3 * j + 0] = (unsigned char) r;
+			row[3 * j + 1] = (unsigned char) g;
+			row[3 * j + 2] = (unsigned char) b;
 		}
-		fwrite(row, 1, image->width * 3, file);
+		fwrite(row, 3, image->width, file);
 	}
 	free(row);
 	fclose(file);

@@ -62,7 +62,7 @@ int save_cache(const char *cache_filename, const int m, const int n, double **U,
 		return 1;
 	}
 
-	if ((size_t) fwrite(S, sizeof(double), k, file) != (size_t) k) {
+	if (fwrite(S, sizeof(double), k, file) != (size_t) k) {
 		perror("save_cache: S write");
 		fclose(file);
 		return 1;

@@ -2,7 +2,8 @@
 
 > _Tiny CLI utility that shrinks grayscale images via **truncated Singular Value Decomposition**._
 
-![cool dog](/images/dog/cool%20dog.gif)
+| ![cool dog color](/images/dog/cool-dog-color.gif) | ![cool dog no color](/images/dog/cool-dog-nocolor.gif) |
+|:-------------------------------------------------:|:------------------------------------------------------:|
 
 ---
 
