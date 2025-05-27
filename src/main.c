@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "../include/cache.h"
-#include "../include/core/cli.h"
-#include "../include/core/processor.h"
-#include "../include/core/utils.h"
-#include "../include/image-processor/convert.h"
-#include "../include/image-processor/image.h"
+#include "cache/cache.h"
+#include "core/cli.h"
+#include "core/processor.h"
+#include "core/utils.h"
+#include "image-processor/convert.h"
+#include "image-processor/image.h"
 
 int main(const int argc, char **argv) {
 	CLIOptions options;

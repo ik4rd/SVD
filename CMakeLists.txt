@@ -3,24 +3,13 @@ project(SVD C)
 
 set(CMAKE_C_STANDARD 23)
 
-add_executable(svd
-        src/image-processor/pgm-ppm-parsers/pgm.c
-        include/image-processor/pgm-ppm-parsers/pgm.h
-        src/image-processor/convert.c
-        include/image-processor/convert.h
-        src/linear-algebra/svd.c
-        include/linear-algebra/svd.h
-        src/main.c
-        src/cache/cache.c
-        include/cache/cache.h
-        include/image-processor/pgm-ppm-parsers/ppm.h
-        src/image-processor/pgm-ppm-parsers/ppm.c
-        include/core/utils.h
-        src/core/utils.c
-        include/image-processor/image.h
-        src/image-processor/image.c
-        include/core/cli.h
-        src/core/cli.c
-        include/core/processor.h
-        src/core/processor.c
+file(GLOB_RECURSE SVD_SOURCES
+        ${PROJECT_SOURCE_DIR}/src/*.c
+)
+
+add_executable(svd ${SVD_SOURCES})
+
+target_include_directories(svd
+        PRIVATE
+        ${PROJECT_SOURCE_DIR}/include
 )

@@ -2,7 +2,7 @@
 // Created by ilya on 27.05.2025.
 //
 
-#include "../../include/core/utils.h"
+#include "core/utils.h"
 
 #include <libgen.h>
 #include <stdio.h>

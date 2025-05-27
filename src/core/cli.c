@@ -2,7 +2,7 @@
 // Created by ilya on 27.05.2025.
 //
 
-#include "../../include/core/cli.h"
+#include "core/cli.h"
 
 #include <getopt.h>
 #include <stdio.h>
