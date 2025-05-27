@@ -54,8 +54,13 @@ make
 Example:
 
 ```bash
-./svd ../images/dog/input.png ../images/dog/output_4.pgm 4
-# → subsequent runs are near-instant: “loaded 4 from cache”
+./svd --color=0 ../images/dog/input.png ../images/dog/color-nocolor/nocolor/output-nocolor-4.pgm 4  
+# if you want RGB image
+
+./svd --color=1 ../images/dog/input.png ../images/dog/color-nocolor/color/output-color-4.ppm 4  
+#if you want BW image
+
+# → subsequent runs are near-instant: “loaded 4 from cache ...”
 ```
 
 ---
