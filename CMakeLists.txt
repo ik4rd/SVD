@@ -11,8 +11,8 @@ add_executable(svd
         src/linear-algebra/svd.c
         include/linear-algebra/svd.h
         src/main.c
-        src/cache.c
-        include/cache.h
+        src/cache/cache.c
+        include/cache/cache.h
         include/image-processor/pgm-ppm-parsers/ppm.h
         src/image-processor/pgm-ppm-parsers/ppm.c
         include/utils.h
@@ -21,4 +21,6 @@ add_executable(svd
         src/image-processor/image.c
         include/cli.h
         src/cli.c
+        include/processor.h
+        src/processor.c
 )
