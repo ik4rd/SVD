@@ -1,6 +1,6 @@
 # 📸 SVD Image Compressor · C
 
-> _Tiny CLI utility that shrinks grayscale images via **truncated Singular Value Decomposition**._
+> _Tiny CLI utility that shrinks images via **truncated Singular Value Decomposition**._
 
 | ![cool dog color](/images/dog/cool-dog-color.gif) | ![cool dog no color](/images/dog/cool-dog-nocolor.gif) |
 |:-------------------------------------------------:|:------------------------------------------------------:|
