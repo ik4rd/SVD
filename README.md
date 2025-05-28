@@ -9,30 +9,60 @@
 
 ## 🧠 TL;DR SVD in one minute
 
-Any matrix $A \in \mathbb{R}_{m \times n}$ can be decomposed as
+Any real matrix $A \in Mat_{m \times n}(\mathbb R)$ admits a decomposition
 
 $$
-A = U \Sigma V^{T},
+A = U \Sigma V^{T}
 $$
 
-where $U$ and $V$ are orthogonal matrices and $\Sigma$ is diagonal.  
-If you keep only the first $k$ singular triplets you get the best rank-k approximation (*in Frobenius norm*):
+where
+
+- $U \in Mat_{m \times m}(\mathbb R)$ and $V \in Mat_{n \times n}(\mathbb R)$ are **orthogonal** ($U U^{T} = E$
+  and $V V^{T} = E$)
+- $\Sigma = diag(\sigma_{1}, ..., \sigma_{r})$ with $r = min(m, n)$ and **singular values
+  ** $\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_r \ge 0$
+
+If we keep only the top $k$ singular values and corresponding vectors
 
 $$
-A_k = \sum_{r=1}^{k} \sigma_r u_r v_{r}^{T}, \qquad k \ll \min(m,n)
+A_{k} = U_{k} \Sigma_{k} V_{k}^{T} = \sum_{i=1}^{k} \sigma_{i} u_{i} v_{i}^{T}
 $$
 
-Treat the pixels of image as entries of $A$ and you obtain **huge size reduction** with **graceful quality
-loss**.
+$A_k$ will be the best *rank-k approximation* to $A$ in the **Frobenius norm**.
 
-<details>
-<summary>📐 More maths (click to expand) </summary>
+Directly computing a full SVD is $O(c \times m n \times min(m,n))$, which can be expensive for large images. Instead, we
+can
+extract the top $k$ singular triplets iteratively using power iteration and deflation:
 
-* Power iteration finds the dominant singular vector by alternating multiplication with $A$ and $A^{T}$.
-* After each triplet $(u_r, \sigma_r, v_r)$ we _deflate_ $A ← A − u_r \sigma_r v_{r}^{T}$ to expose the next $\sigma$.
-* This process repeats until the requested rank is reached.
+($\star$) Let $A^{(0)} = A$. For each $i = 1 \dots k$:
 
-</details>
+1. initialise a random unit vector $v^{(0)} \in \mathbb R^{n}$
+2. for $t = 1, \dots, T$:
+   $$
+   w^{(t)} = A^{(i-1)} v^{(t-1)}, \qquad w^{(t)} \leftarrow \frac{w^{(t)}}{||w^{(t)}||}
+   $$
+   $$
+   z^{(t)} = (A^{(i-1)})^{T} w^{(t)}, \qquad v^{(t)} \leftarrow \frac{z^{(t)}}{||z^{(t)}||}
+   $$
+3. after T steps set:
+   $$
+   u_{i} = w^{(T)}, \qquad v_{i} = v^{(T)}, \qquad \sigma_{i} = ||A^{(i-1)} v_{i}||
+   $$
+4. remove the contribution of the extracted singular triplet from the working matrix:
+   $$
+   A^{(i)} \leftarrow A^{(i-1)} - \sigma_{i} u_{i} v_{i}^{T}
+   $$
+   (this guarantees that in the next iteration, the dominant singular pair of $A^{(i)}$
+   is $(u_{i+1}, \sigma_{i+1}, v_{i+1})$)
+
+Algorithm complexity: $O(c \times k \times (T+1) \times mn)$, where:
+
+- $c$ — number of channels (1 for grayscale, 3 for RGB)
+- $k$ — target rank
+- $T$ — number of power‐iteration steps per component (default `T = 100`)
+- $m, n$ — image dimensions: height (rows) and width (columns)
+
+With $T$ treated as a constant, complexity reduces to $O(c \times k \times mn)$.
 
 ---
 
