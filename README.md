@@ -19,8 +19,7 @@ where
 
 - $U \in Mat_{m \times m}(\mathbb R)$ and $V \in Mat_{n \times n}(\mathbb R)$ are **orthogonal** ($U U^{T} = E$
   and $V V^{T} = E$)
-- $\Sigma = diag(\sigma_{1}, ..., \sigma_{r})$ with $r = min(m, n)$ and **singular values
-  ** $\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_r \ge 0$
+- $\Sigma = diag(\sigma_{1}, ..., \sigma_{r})$ with $r = min(m, n)$ and **singular values** $\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_r \ge 0$
 
 If we keep only the top $k$ singular values and corresponding vectors
 
