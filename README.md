@@ -22,7 +22,7 @@ $$
 A_k = \sum_{r=1}^{k} \sigma_r u_r v_{r}^{T}, \qquad k \ll \min(m,n)
 $$
 
-Treat the pixels of a grayscale image as entries of $A$ and you obtain **huge size reduction** with **graceful quality
+Treat the pixels of image as entries of $A$ and you obtain **huge size reduction** with **graceful quality
 loss**.
 
 <details>
