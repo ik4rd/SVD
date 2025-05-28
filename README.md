@@ -29,39 +29,42 @@ $$
 
 $A_k$ will be the best *rank-k approximation* to $A$ in the **Frobenius norm**.
 
-Directly computing a full SVD is $O(c \times m n \times min(m,n))$, which can be expensive for large images. Instead, we
-can
-extract the top $k$ singular triplets iteratively using power iteration and deflation:
+Directly computing a full SVD is $O(c \times m n \times min(m,n))$, which can be expensive for large images. Instead, we can extract the top $k$ singular triplets iteratively using power iteration and deflation:
 
-($\star$) Let $A^{(0)} = A$. For each $i = 1 \dots k$:
+Let $A^{(0)} = A$. For each $i = 1 \dots k$:
 
 1. initialise a random unit vector $v^{(0)} \in \mathbb R^{n}$
-2. for $t = 1, \dots, T$:
-   $$
-   w^{(t)} = A^{(i-1)} v^{(t-1)}, \qquad w^{(t)} \leftarrow \frac{w^{(t)}}{||w^{(t)}||}
-   $$
-   $$
-   z^{(t)} = (A^{(i-1)})^{T} w^{(t)}, \qquad v^{(t)} \leftarrow \frac{z^{(t)}}{||z^{(t)}||}
-   $$
-3. after T steps set:
-   $$
-   u_{i} = w^{(T)}, \qquad v_{i} = v^{(T)}, \qquad \sigma_{i} = ||A^{(i-1)} v_{i}||
-   $$
-4. remove the contribution of the extracted singular triplet from the working matrix:
-   $$
-   A^{(i)} \leftarrow A^{(i-1)} - \sigma_{i} u_{i} v_{i}^{T}
-   $$
-   (this guarantees that in the next iteration, the dominant singular pair of $A^{(i)}$
-   is $(u_{i+1}, \sigma_{i+1}, v_{i+1})$)
 
-Algorithm complexity: $O(c \times k \times (T+1) \times mn)$, where:
+2. for $t = 1, \dots, T$:
+
+$$
+w^{(t)} = A^{(i-1)} v^{(t-1)}, \qquad w^{(t)} \leftarrow \frac{w^{(t)}}{||w^{(t)}||}
+$$
+
+$$
+z^{(t)} = (A^{(i-1)})^{T} w^{(t)}, \qquad v^{(t)} \leftarrow \frac{z^{(t)}}{||z^{(t)}||}
+$$
+
+3. after T steps set:
+
+$$
+u_{i} = w^{(T)}, \qquad v_{i} = v^{(T)}, \qquad \sigma_{i} = ||A^{(i-1)} v_{i}||
+$$
+
+4. remove the contribution of the extracted singular triplet from the working matrix:
+   
+$$
+A^{(i)} \leftarrow A^{(i-1)} - \sigma_{i} u_{i} v_{i}^{T}
+$$
+
+Algorithm complexity: $O(c \times k \times (T+1) \times m n)$, where:
 
 - $c$ — number of channels (1 for grayscale, 3 for RGB)
 - $k$ — target rank
 - $T$ — number of power‐iteration steps per component (default `T = 100`)
 - $m, n$ — image dimensions: height (rows) and width (columns)
 
-With $T$ treated as a constant, complexity reduces to $O(c \times k \times mn)$.
+With $T$ treated as a constant, complexity reduces to $O(c \times k \times m n)$.
 
 ---
 
